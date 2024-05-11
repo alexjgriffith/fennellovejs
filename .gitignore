@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+megasource
+resources/love-*
+
+# emacs version control
+\#*
+*\#
+*~
