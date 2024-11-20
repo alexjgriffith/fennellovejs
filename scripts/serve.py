@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Attribution: https://stackoverflow.com/questions/21956683/enable-access-control-on-simple-http-server
 

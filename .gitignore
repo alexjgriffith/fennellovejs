@@ -1,9 +1,13 @@
 node_modules
 dist
 build
+build/*
 megasource
 resources/love-*
-
+resources/release
+resources/compat
+resources/game.data
+resources/game.metadata
 # emacs version control
 \#*
 *\#
