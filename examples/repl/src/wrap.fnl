@@ -74,4 +74,4 @@ else {
                                        ))))
 
 (fn love.draw []
-  (love.graphics.print "Hello world"))
+  (love.graphics.print "Hello world!!"))
