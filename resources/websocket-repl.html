@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>LOVEJS</title>
+  </head>
+  <body style="margin:0px;">
+    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <script src="parameters.js"></script>
+    <script type='text/javascript'>
+      console.log(game_parameters)
+      // Create WebSocket connection.
+      // const socket = new WebSocket("ws://localhost:9000/ws");
+      
+      // Connection opened
+      // socket.addEventListener("open", (event) => {
+      // console.log("repl websocket connected");
+      // });
+      
+      // Listen for messages
+      // socket.addEventListener("message", (event) => {
+      //     socket.send(event.data + "\n");
+      // });
+
+      // event stream to watch for file changes
+      function _getFile (file){
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  "nothing"
+                  // replace this with module load replace function
+                  // document.getElementById("demo").innerHTML = xhttp.responseText;
+              }
+          };
+          xhttp.open("GET", file, true);
+          xhttp.send();
+      }
+      const events = new EventSource("/file-change-events");
+      events.onmessage = function (e) {
+          console.log(e);
+          // socket.send(e.data + "\n");
+          if (e.data.substring(0,1) != "#"){
+              _getFile(e.data);
+          }
+      }
+      
+      // love2d stuff
+      var Module = {
+        print: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = ''; // clear browser cache
+          return (...args) => {
+            var text = args.join(' ');
+            console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
+        canvas: (() => {
+          var canvas = document.getElementById('canvas');
+
+          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+          // application robust, you may want to override this behavior before shipping!
+          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+          canvas.addEventListener("webglcontextlost", (e) => { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+          return canvas;
+        })(),
+          setStatus: (text) => {
+              const event = new CustomEvent("love2dStatusUpdate", {detail: text});
+              var canvas = document.getElementById("canvas");
+              canvas.dispatchEvent(event);
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: (left) => {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        }
+      };
+      Module.setStatus('Downloading...');
+      window.onerror = (event) => {
+        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+        Module.setStatus('Exception thrown, see JavaScript console');
+        // spinnerElement.style.display = 'none';
+        Module.setStatus = (text) => {
+          if (text) console.error('[post-exception status] ' + text);
+        };   
+      };
+
+      // window size change and orientation change
+      if (screen.orientation) { // Property doesn't exist on screen in IE11   
+          screen.orientation.addEventListener("change",
+                                              (ev)=>
+                                              {
+                                                  love_send_event("orientation-change", ev.currentTarget.type, 0)
+                                              });
+      }
+      addEventListener("resize",
+                       (ev)=>
+                       {
+                           love_send_event("resize",JSON.stringify({"w": window.innerWidth, "h": window.innerHeight}), 0);
+                       })
+
+    </script>
+    <script src="preload.js"></script>
+    <script async src="release/love.js"></script>
+  </body>
+</html>

@@ -139,9 +139,9 @@
         {: size} (lfs.attributes love-file)]
     (-> (string.formt "{\"files\":[{\"filename\":\"/home/web_user/love/%s\",\"start\":%d,\"end\":%d}],\"remote_package_size\":%d}"
                       :game.data 0 size size)
-        (save-string (.. outfile :game.metadata)))
+        (save-string (.. out-file :game.metadata)))
     (with-open [fin (io.open love-file :r)
-                fout (io.open (.. outfile :game.data) :w)]
+                fout (io.open (.. out-file :game.data) :w)]
       (fout:write (fin:read :*all))
       (fout:flush))))
 
