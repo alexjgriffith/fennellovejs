@@ -111,7 +111,8 @@ Module['FS_createPath']("/", "home", true, true);
 Module['FS_createPath']("/home", "web_user", true, true);
 Module['FS_createPath']("/home/web_user", "love", true, true);
 Module['FS_createPath']("/home/web_user/love", "lib", true, true);
-Module['FS_createPath']("/home/web_user/love", "src", true, true);
+        Module['FS_createPath']("/home/web_user/love", "src", true, true);
+        Module['FS_createPath']("/home/web_user/love", "assets", true, true);
 
       /** @constructor */
       function DataRequest(start, end, audio) {

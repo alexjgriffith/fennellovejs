@@ -3,11 +3,6 @@
 (local repl (require :lib.step-repl))
 
 (local state (require :src.state))
-(set state.x 0)
-(set state.y 0)
-(set state.dx 1)
-(set state.dy 1)
-(set state.ws nil)
 
 (local opts {:onValues (fn [vals]
                          (local {: ws} (require :src.state))
@@ -28,6 +23,10 @@
 
 (local address "ws://localhost:9000/ws")
 (fn love.load []
+  (set state.x 0)
+  (set state.y 0)
+  (set state.dx 1)
+  (set state.dy 1)
   (pp websockets)
   (local state (require :src.state))
   (tset state :ws (websockets.new address))
@@ -102,11 +101,12 @@ Module[\"canvas\"].height=%d;
   (local pallets (require :src.pallets))
   (love.graphics.clear (unpack (. pallets.indecision 1)))
   (love.graphics.translate x y)
-  (love.graphics.setColor (. pallets.indecision 12))
+  (love.graphics.setColor (. pallets.indecision 10))
   (love.graphics.rectangle :fill 0 0 300 100)
-  (love.graphics.setColor 0 0 0 1)
+  (love.graphics.setColor (. pallets.indecision 17))
   (love.graphics.print "Update" 20 -10)
   )
+
 
 (fn love.resize [w h]
   (pp [w h]))
@@ -114,7 +114,7 @@ Module[\"canvas\"].height=%d;
 ;; env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S fennel -e '(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)'
 
 ;; Local Variables:
-;; love2d-fennel-program: "env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S fennel -e '(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)' && env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S ./scripts/websocket-stdio -i resources/websocket-repl.html -d ./,resources/ -p 9000"
+;; love2d-fennel-program: "env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S fennel -e '(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)' && env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S ./scripts/websocket-stdio -i resources/websocket-repl.html -d ./examples/repl,resources -p 9000 -l log~"
 ;; fennel-repl--buffer-name:"*LOVEJS REPL*"
 ;; End:
 

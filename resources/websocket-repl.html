@@ -28,20 +28,27 @@
           var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                  "nothing"
                   // replace this with module load replace function
                   // document.getElementById("demo").innerHTML = xhttp.responseText;
+                  // FS.writeFile("/home/web_user/love/example.fnl","(print :example) {}")
+                  console.log("File Update:" + file);
+                  FS.writeFile("/home/web_user/love/" + file, xhttp.responseText);
               }
           };
           xhttp.open("GET", file, true);
           xhttp.send();
       }
+      
       const events = new EventSource("/file-change-events");
       events.onmessage = function (e) {
           console.log(e);
           // socket.send(e.data + "\n");
           if (e.data.substring(0,1) != "#"){
-              _getFile(e.data);
+              let analysis = FS.analyzePath("/home/web_user/love/" + e.data);
+              console.log(analysis);
+              if (analysis.parentExists){
+                  _getFile(e.data);
+              }
           }
       }
       
