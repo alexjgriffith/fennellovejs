@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
     <title>LOVEJS</title>
   </head>
   <body style="margin:0px;">
@@ -10,6 +11,38 @@
     <script src="parameters.js"></script>
     <script type='text/javascript'>
       console.log(game_parameters)
+
+
+      function goFullScreen(){
+          var canvas = document.getElementById("canvas");
+          if(canvas.requestFullScreen)
+              canvas.requestFullScreen();
+          else if(canvas.webkitRequestFullScreen)
+              canvas.webkitRequestFullScreen();
+          else if(canvas.mozRequestFullScreen)
+              canvas.mozRequestFullScreen();
+      }
+
+      function closeFullScreen() {
+          if (document.exitFullscreen) {
+              document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) { /* Safari */
+              document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) { /* IE11 */
+              document.msExitFullscreen();
+          }
+      }
+
+      function toggleFullScreen(){
+          if((window.fullScreen) || /* firefox */
+              document.fullscreenElement || /* chrome */
+             (window.innerWidth == screen.width &&  /* everything else */
+              window.innerHeight == screen.height)) {
+              closeFullScreen();
+          } else {
+              goFullScreen();
+          }
+      }      
       // Create WebSocket connection.
       // const socket = new WebSocket("ws://localhost:9000/ws");
       
@@ -33,6 +66,7 @@
                   // FS.writeFile("/home/web_user/love/example.fnl","(print :example) {}")
                   console.log("File Update:" + file);
                   FS.writeFile("/home/web_user/love/" + file, xhttp.responseText);
+                  love_send_event("fileupload", file, 0);
               }
           };
           xhttp.open("GET", file, true);
@@ -46,6 +80,7 @@
           if (e.data.substring(0,1) != "#"){
               let analysis = FS.analyzePath("/home/web_user/love/" + e.data);
               console.log(analysis);
+              love_send_event("log", "File Upload: " + e.data , 0);
               if (analysis.parentExists){
                   _getFile(e.data);
               }
@@ -108,11 +143,11 @@
       addEventListener("resize",
                        (ev)=>
                        {
-                           love_send_event("resize",JSON.stringify({"w": window.innerWidth, "h": window.innerHeight}), 0);
+                           love_send_event("window-resize",JSON.stringify({"w": window.innerWidth, "h": window.innerHeight}), 0);
                        })
 
     </script>
     <script src="preload.js"></script>
-    <script async src="release/love.js"></script>
+    <script async src="compat/love.js"></script>
   </body>
 </html>

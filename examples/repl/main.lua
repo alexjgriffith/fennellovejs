@@ -21,10 +21,11 @@ end
 table.insert(package.loaders, make_love_searcher(_G))
 table.insert(fennel["macro-searchers"], make_love_searcher("_COMPILER"))
 
-
 pp = function (text)
    print (fennel.view (text))
    io.flush()
 end
+
+require("src.run")
 
 require("src.wrap")
