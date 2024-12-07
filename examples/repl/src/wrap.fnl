@@ -50,6 +50,10 @@
 (local font (love.graphics.newFont :fallingsky.otf 80))
 (love.graphics.setFont font)
 
+(fn love.mousepressed [id x y dx dy pressure]
+  ;; (pp [:mousepressed id x y dx dy pressure])
+  )
+
 (fn love.touchpressed [id x y dx dy pressure]
   (pp [:touchpressed id x y dx dy pressure]))
 
@@ -57,7 +61,9 @@
   (pp [:touchreleased id x y dx dy pressure]))
 
 (fn love.touchmoved [id x y dx dy pressure]
-  (pp [:touchmoved id x y dx dy pressure]))
+  (pp [:touchmoved id x y dx dy pressure])
+  )
+
 
 (fn love.update [dt]
   (local speed 1)
@@ -75,8 +81,6 @@
   (local (w h) (love.window.getMode))
   (love.graphics.printf "Testing StdIO over Websockets" 0 10 w  :center))
 
-
-
 (fn love.draw []
   (local {: x : y} (require :src.state))
   (local pallets (require :src.pallets))
@@ -86,8 +90,6 @@
   (love.graphics.rectangle :fill 0 0 300 100)
   (love.graphics.setColor (. pallets.indecision 17))
   (love.graphics.print "Update" 20 -10))
-
-
 
 (fn love.resize [w h] )
 

@@ -15,5 +15,9 @@ compile:
 pack-template:
 	./scripts/template-preload.sh $(EMSDK) $(CURDIR)/examples/repl game.data
 
+embed-template:
+	./scripts/template-embed.sh $(EMSDK) $(CURDIR)/examples/repl $(CURDIR)/resources/compat/love.html;
+
+
 lovefile:
 	$(shell cd game && find -type f | LC_ALL=C sort | env TZ=UTC zip -r -q -9 -X ../${LOVEFILE} -@)
