@@ -8,8 +8,8 @@
 (fn love.load []
   (when (= :Web (love.system.getOS))
     (local websocket-repl (require :src.websocket-repl))
-    (websocket-repl.start "ws://192.168.0.18:9000/ws")
-    ;; (websocket-repl.start "ws://localhost:9000/ws")
+    ;; (websocket-repl.start "ws://192.168.0.18:9000/ws")
+    (websocket-repl.start "ws://localhost:9000/ws")
     (update-html-window-size))
   (set state.x 0)
   (set state.y 0)
@@ -18,12 +18,11 @@
 
 (set love.handlers.fileupload
      (fn [filename]
-       (pp filename)))
-
+       (print (string.format ";; Uploaded File: %s" filename))))
 
 (set love.handlers.log
      (fn [str]
-       (pp str)))
+       (print str)))
 
 (set love.handlers.window-resize
      (fn [jsondata]

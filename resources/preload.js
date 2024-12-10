@@ -1,12 +1,12 @@
 // this is generated using template-preload . the only change is to replace the file name preload.js.metadata
 // with game.metadata
-  var Module = typeof Module != 'undefined' ? Module : {};
+  var LoveState = typeof LoveState != 'undefined' ? LoveState : {};
 
-  if (!Module['expectedDataFileDownloads']) {
-    Module['expectedDataFileDownloads'] = 0;
+  if (!LoveState['expectedDataFileDownloads']) {
+    LoveState['expectedDataFileDownloads'] = 0;
   }
 
-  Module['expectedDataFileDownloads']++;
+  LoveState['expectedDataFileDownloads']++;
   (() => {
     // Do not attempt to redownload the virtual filesystem data when in a pthread or a Wasm Worker context.
     var isPthread = typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD;
@@ -23,16 +23,16 @@
       }
       var PACKAGE_NAME = 'game.data';
       var REMOTE_PACKAGE_BASE = 'game.data';
-      if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
-        Module['locateFile'] = Module['locateFilePackage'];
-        err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
+      if (typeof LoveState['locateFilePackage'] === 'function' && !LoveState['locateFile']) {
+        LoveState['locateFile'] = LoveState['locateFilePackage'];
+        err('warning: you defined LoveState.locateFilePackage, that has been renamed to LoveState.locateFile (using your locateFilePackage for now)');
       }
-      var REMOTE_PACKAGE_NAME = Module['locateFile'] ? Module['locateFile'](REMOTE_PACKAGE_BASE, '') : REMOTE_PACKAGE_BASE;
+      var REMOTE_PACKAGE_NAME = LoveState['locateFile'] ? LoveState['locateFile'](REMOTE_PACKAGE_BASE, '') : REMOTE_PACKAGE_BASE;
 var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
 
       function fetchRemotePackage(packageName, packageSize, callback, errback) {
         
-        Module['dataFileDownloads'] ??= {};
+        LoveState['dataFileDownloads'] ??= {};
         fetch(packageName)
           .catch((cause) => Promise.reject(new Error(`Network Error: ${packageName}`, {cause}))) // If fetch fails, rewrite the error to include the failing URL & the cause.
           .then((response) => {
@@ -58,17 +58,17 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
               if (!done) {
                 chunks.push(value);
                 loaded += value.length;
-                Module['dataFileDownloads'][packageName] = {loaded, total};
+                LoveState['dataFileDownloads'][packageName] = {loaded, total};
 
                 let totalLoaded = 0;
                 let totalSize = 0;
 
-                for (const download of Object.values(Module['dataFileDownloads'])) {
+                for (const download of Object.values(LoveState['dataFileDownloads'])) {
                   totalLoaded += download.loaded;
                   totalSize += download.total;
                 }
 
-                Module['setStatus']?.(`Downloading data... (${totalLoaded}/${totalSize})`);
+                LoveState['setStatus']?.(`Downloading data... (${totalLoaded}/${totalSize})`);
                 return iterate();
               } else {
                 const packageData = new Uint8Array(chunks.map((c) => c.length).reduce((a, b) => a + b, 0));
@@ -81,7 +81,7 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
               }
             };
 
-            Module['setStatus']?.('Downloading data...');
+            LoveState['setStatus']?.('Downloading data...');
             return iterate();
           });
       };
@@ -91,7 +91,7 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
       };
 
       var fetchedCallback = null;
-      var fetched = Module['getPreloadedPackage'] ? Module['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
+      var fetched = LoveState['getPreloadedPackage'] ? LoveState['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
 
       if (!fetched) fetchRemotePackage(REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE, (data) => {
         if (fetchedCallback) {
@@ -102,17 +102,17 @@ var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
         }
       }, handleError);
 
-    function runWithFS(Module) {
+    function runWithFS(LoveState) {
 
       function assert(check, msg) {
         if (!check) throw msg + new Error().stack;
       }
-Module['FS_createPath']("/", "home", true, true);
-Module['FS_createPath']("/home", "web_user", true, true);
-Module['FS_createPath']("/home/web_user", "love", true, true);
-Module['FS_createPath']("/home/web_user/love", "lib", true, true);
-        Module['FS_createPath']("/home/web_user/love", "src", true, true);
-        Module['FS_createPath']("/home/web_user/love", "assets", true, true);
+LoveState['FS_createPath']("/", "home", true, true);
+LoveState['FS_createPath']("/home", "web_user", true, true);
+LoveState['FS_createPath']("/home/web_user", "love", true, true);
+LoveState['FS_createPath']("/home/web_user/love", "lib", true, true);
+        LoveState['FS_createPath']("/home/web_user/love", "src", true, true);
+        LoveState['FS_createPath']("/home/web_user/love", "assets", true, true);
 
       /** @constructor */
       function DataRequest(start, end, audio) {
@@ -125,7 +125,7 @@ Module['FS_createPath']("/home/web_user/love", "lib", true, true);
         open: function(mode, name) {
           this.name = name;
           this.requests[name] = this;
-          Module['addRunDependency'](`fp ${this.name}`);
+          LoveState['addRunDependency'](`fp ${this.name}`);
         },
         send: function() {},
         onload: function() {
@@ -135,8 +135,8 @@ Module['FS_createPath']("/home/web_user/love", "lib", true, true);
         finish: function(byteArray) {
           var that = this;
           // canOwn this data in the filesystem, it is a slide into the heap that will never change
-          Module['FS_createDataFile'](this.name, null, byteArray, true, true, true);
-          Module['removeRunDependency'](`fp ${that.name}`);
+          LoveState['FS_createDataFile'](this.name, null, byteArray, true, true, true);
+          LoveState['removeRunDependency'](`fp ${that.name}`);
           this.requests[this.name] = null;
         }
       };
@@ -156,14 +156,14 @@ Module['FS_createPath']("/home/web_user/love", "lib", true, true);
           var files = metadata['files'];
           for (var i = 0; i < files.length; ++i) {
             DataRequest.prototype.requests[files[i].filename].onload();
-          }          Module['removeRunDependency']('datafile_game.data');
+          }          LoveState['removeRunDependency']('datafile_game.data');
 
       };
-      Module['addRunDependency']('datafile_game.data');
+      LoveState['addRunDependency']('datafile_game.data');
 
-      if (!Module['preloadResults']) Module['preloadResults'] = {};
+      if (!LoveState['preloadResults']) LoveState['preloadResults'] = {};
 
-      Module['preloadResults'][PACKAGE_NAME] = {fromCache: false};
+      LoveState['preloadResults'][PACKAGE_NAME] = {fromCache: false};
       if (fetched) {
         processPackageData(fetched);
         fetched = null;
@@ -172,19 +172,19 @@ Module['FS_createPath']("/home/web_user/love", "lib", true, true);
       }
 
     }
-    if (Module['calledRun']) {
-      runWithFS(Module);
+    if (LoveState['calledRun']) {
+      runWithFS(LoveState);
     } else {
-      if (!Module['preRun']) Module['preRun'] = [];
-      Module["preRun"].push(runWithFS); // FS is not initialized yet, wait for it
+      if (!LoveState['preRun']) LoveState['preRun'] = [];
+      LoveState["preRun"].push(runWithFS); // FS is not initialized yet, wait for it
     }
 
-    Module['removeRunDependency']('game.metadata');
+    LoveState['removeRunDependency']('game.metadata');
   }
 
   function runMetaWithFS() {
-    Module['addRunDependency']('game.metadata');
-    var REMOTE_METADATA_NAME = Module['locateFile'] ? Module['locateFile']('game.metadata', '') : 'game.metadata';
+    LoveState['addRunDependency']('game.metadata');
+    var REMOTE_METADATA_NAME = LoveState['locateFile'] ? LoveState['locateFile']('game.metadata', '') : 'game.metadata';
     fetch(REMOTE_METADATA_NAME)
       .then((response) => {
         if (response.ok) {
@@ -195,11 +195,11 @@ Module['FS_createPath']("/home/web_user/love", "lib", true, true);
       .then(loadPackage);
   }
 
-  if (Module['calledRun']) {
+  if (LoveState['calledRun']) {
     runMetaWithFS();
   } else {
-    if (!Module['preRun']) Module['preRun'] = [];
-    Module["preRun"].push(runMetaWithFS);
+    if (!LoveState['preRun']) LoveState['preRun'] = [];
+    LoveState["preRun"].push(runMetaWithFS);
   }
 
   })();
