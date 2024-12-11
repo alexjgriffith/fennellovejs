@@ -1,6 +1,6 @@
 love.conf = function(t)
    t.gammacorrect = false
-   t.title, t.identity = "gnomic-vengeance", "gnomic-vengeance"
+   t.title, t.identity = "repl-example", "repl-example"
    t.modules.joystick = false
    t.modules.physics = false
    t.window.width = 1280-- 720 * 21 / 9 -- 1280 -- 1920

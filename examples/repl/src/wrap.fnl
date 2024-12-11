@@ -63,7 +63,6 @@
   (pp [:touchmoved id x y dx dy pressure])
   )
 
-
 (fn love.update [dt]
   (local speed 1)
   (local {: x : dx &as state} (require :src.state))
@@ -92,10 +91,10 @@
 
 (fn love.resize [w h] )
 
-;; env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S fennel -e '(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)'
+;; env --chdir=/home/alexjgriffith/Github/fennellovejs/ -S fennel -e '(local {: build-project} (require :src.build-project)) (build-project :examples/repl/ :resources/)'
 
 ;; Local Variables:
-;; love2d-fennel-program: "env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S fennel -e '(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)' && env --chdir=/home/alexjgriffith/Github/lovejs-update/fennellovejs/ -S ./scripts/websocket-stdio -i resources/websocket-repl.html -d ./examples/repl,resources -p 9000 -l log~ -t \"0.0.0.0\""
+;; love2d-fennel-program: "env --chdir=/home/alexjgriffith/Github/fennellovejs/ -S fennel -e '(local {: build-project} (require :src.build-project)) (build-project :examples/repl/ :resources/)' && env --chdir=/home/alexjgriffith/Github/fennellovejs/ -S ./scripts/websocket-stdio -i resources/shell.html -d ./examples/repl,resources -p 9000 -l log~ -t \"0.0.0.0\""
 ;; fennel-repl--buffer-name:"*LOVEJS REPL*"
 ;; End:
 

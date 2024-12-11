@@ -1,6 +1,6 @@
 serve:
-	$(shell fennel -e "(local {: build-project} (require :buildtools.build-project)) (build-project :examples/repl/ :resources/)")
-	$(shell cd resources && ../scripts/websocket-stdio -i websocket-repl.html -d ../,./ -p 9000)
+	fennel -e "(local {: build-project} (require :src.build-project)) (build-project :examples/repl/ :resources/)"
+	env --chdir=/home/alexjgriffith/Github/fennellovejs/ -S ./scripts/websocket-stdio -i resources/shell.html -d ./examples/repl,resources -p 9000 -l log~ -t "0.0.0.0"
 
 setup:
 	$(shell ./scripts/download-lovejs.sh)
