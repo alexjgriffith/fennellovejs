@@ -5,11 +5,16 @@ root_address=https://github.com/alexjgriffith/update-lovejs/releases/download/11
 
 download_lovejs () {
     fname=$1
-    echo "Downloading $fname"
-    curl $root_address/$fname.zip > $fname.zip && unzip $fname.zip
-    rm $fname.zip
-    cd ../resources
-    ln -s ../build/fname
+    (
+        curl -L -C - -o $fname.zip  $root_address$fname.zip && \
+        mkdir -p $fname && \
+        mv $fname.zip $fname && \
+        cd $fname && \
+        unzip $fname.zip  && \
+        rm $fname.zip && \
+        cd ../../resources && \
+        ln -s ../build/$fname
+    )
 }
 
 download_lovejs "love115-compat-beta1";
